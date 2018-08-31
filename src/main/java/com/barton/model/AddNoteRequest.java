@@ -16,4 +16,6 @@ public class AddNoteRequest {
     private String body;
     @NotNull
     private List<String> tags;
+    @NotNull
+    private int notebookID;
 }
