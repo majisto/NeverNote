@@ -1,5 +1,6 @@
 package com.barton.model;
 
+import com.barton.utils.mainUtils;
 import lombok.Data;
 
 import java.util.*;
@@ -38,7 +39,6 @@ public class NoteBook {
 
     public void deleteNoteByTitle(String title){
         if (noteTitleSet.remove(title)){ //successful removal means it was in the set.
-            System.out.println(title);
             tagMap.values().forEach(e -> e.remove(title));
         }
     }
@@ -48,6 +48,15 @@ public class NoteBook {
     }
 
     private void updateNote(Note note){
-        
+        note.setLastModified(mainUtils.generateTimeStamp());
+        for (String tag : note.getTags()){
+            if (!tagMap.containsKey(tag)){ //No key means a new tag we need to add
+                Map<String, Note> innerMap = new HashMap<>();
+                innerMap.put(note.getTitle(), note);
+                tagMap.put(tag, innerMap);
+            } else {
+                tagMap.get(tag).put(note.getTitle(), note);
+            }
+        }
     }
 }
